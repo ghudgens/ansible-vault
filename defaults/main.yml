@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------
 
 # Package variables
-vault_version: "{{ lookup('env', 'VAULT_VERSION') | default('1.5.5', true) }}{{ '+prem' if vault_enterprise_premium else '' }}{{ '.hsm' if vault_enterprise_premium_hsm else '' }}"
+vault_version: "{{ lookup('env','VAULT_VERSION') | default('1.12.0', true) }}{{'+prem' if vault_enterprise_premium else '' }}{{'.hsm' if vault_enterprise_premium_hsm else '' }}"
 vault_architecture_map:
   # this first entry seems... redundant (but it's required for reasons)
   amd64: amd64
@@ -33,7 +33,7 @@ vault_install_remotely: false
 vault_privileged_install: false
 
 # Paths
-vault_bin_path: "{{ '/usr/bin' if (vault_install_hashi_repo) else '/usr/local/bin' }}"
+vault_bin_path: /usr/local/bin
 vault_config_path: /etc/vault.d
 vault_plugin_path: /usr/local/lib/vault/plugins
 vault_data_path: "{{ '/opt/vault/data' if (vault_install_hashi_repo) else '/var/vault' }}"
@@ -372,9 +372,9 @@ vault_entropy_seal: false
 # Enterprise related variables
 # ---------------------------------------------------------------------------
 
-vault_enterprise: "{{ lookup('env', 'VAULT_ENTERPRISE') | default(false, true) }}"
-vault_enterprise_pkg: "vault-enterprise_{{ vault_version }}_{{ vault_os }}_{{ vault_architecture }}.zip"
-vault_enterprise_shasums: "vault-enterprise_{{ vault_version }}_SHA256SUMS"
+vault_enterprise: "{{ lookup('env','VAULT_ENTERPRISE') | default(false, true) }}"
+vault_enterprise_pkg: "vault_{{ vault_version }}_{{ vault_os }}_{{ vault_architecture }}.zip"
+vault_enterprise_shasums: "vault_{{ vault_version }}_SHA256SUMS"
 vault_enterprise_premium: false
 
 # Manage enterprise license file with this role

@@ -8,6 +8,19 @@
     state: present
   tags: installation
 
+- name: "[Enterprise] Download checksum file from {{ vault_checksum_file_url }} (local)"
+  uri:
+    url: "{{ vault_checksum_file_url }}"
+    dest: "{{ role_path }}/files/{{ vault_enterprise_shasums }}"
+    method: GET
+    status_code:
+      - 200
+      - 304
+  become: false
+  run_once: true
+  register: vault_checksum
+  delegate_to: 127.0.0.1
+
 - name: "[Enterprise] Check vault_enterprise_shasums (local)"
   stat:
     path: "{{ role_path }}/files/{{ vault_enterprise_shasums }}"
@@ -40,7 +53,7 @@
 
 - name: "[Enterprise] Download vault (local)"
   get_url:
-    url: "{{ vault_zip_url }}/{{ vault_enterprise_pkg }}"
+    url: "{{ vault_zip_url }}"
     dest: "{{ role_path }}/files/{{ vault_enterprise_pkg }}"
     checksum: sha256:{{ vault_sha256.stdout }}
     timeout: 42
